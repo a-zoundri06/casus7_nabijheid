@@ -1,0 +1,209 @@
+Identifier,Index,Title,Description,MeasureGroupId,DataType,Unit,Decimals,PresentationType
+GM000C,2,Gemeentenaam,De naam van de bestuurlijke gemeente. Deze naam volgt de officiële schrijfwijze.,R00000,String,naam,0,
+R00003,3,Soort regio,"De gekozen regioaanduiding betreft: Gemeente, Wijk of Buurt.",R00000,String,omschrijving,0,
+R00004,4,Codering,"Gemeentecode heeft 4 posities, voorafgegaan door 'GM'.
+Wijkcode heeft 6 posities: gemeentecode (4) + wijkcode (2), voorafgegaan door 'WK'.
+Buurtcode heeft 8 posities: gemeentecode (4) + wijkcode (2) + buurtcode (2), voorafgegaan door 'BU'.
+",R00000,String,code,0,
+M000125,5,Indelingswijziging wijken en buurten,"Deze indicator geeft per wijk en buurt aan of de cijfers uit deze tabel zonder problemen kunnen worden gekoppeld aan en vergeleken met de cijfers van een jaar eerder, of dat er wijzigingen in de Wijk- en Buurtindeling zijn waardoor dit niet kan. Detailinformatie over wijzigingen in de Wijk- en Buurtindeling kan worden verkregen door de wijk- en buurtkaart van twee opeenvolgende jaren met elkaar te vergelijken.
+
+De indicator kent drie mogelijke waarden:
+1: De codering en afbakening van deze wijk/buurt is ongewijzigd ten opzichte van het voorgaande jaar. Het is wel mogelijk dat een naamswijziging heeft plaatsgevonden. De cijfers kunnen worden gekoppeld en vergeleken met die van het voorgaande jaar.
+2: De codering van de wijk/buurt is veranderd ten opzichte van het voorgaande jaar. De afbakening is ongewijzigd. Om te kunnen koppelen met cijfers van het voorgaande jaar zal eerst moeten worden achterhaald wat de codering van het voorgaande jaar was. Is de koppeling eenmaal geslaagd dan kunnen de cijfers alsnog met elkaar worden vergeleken.
+3: De afbakening van de wijk/buurt is veranderd ten opzichte van het voorgaande jaar. Dit kan gepaard zijn gegaan met een gewijzigde codering. De cijfers kunnen niet zonder meer worden vergeleken met die van het voorgaande jaar. Verschillen kunnen immers samenhangen met de verandering in de afbakening van de wijk of buurt.
+
+Voor een wijk of buurt wordt alleen een wijziging in de afbakening geconstateerd, wanneer een grens circa 5 meter of meer is verlegd. Kleinere grenswijzigingen worden niet als significant beschouwd.
+",R00000,String,code,0,
+D000028,8,Afstand tot huisartsenpraktijk,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde huisartsenpraktijk, berekend over de weg.
+Met ingang van verslagjaar 2020 krijgt het CBS de populatie huisartsenpraktijken in een andere vorm dan voorheen aangeleverd: de nevenadressen van huisartsenpraktijken maken geen deel meer uit van de populatie. Door deze wijziging in de bronbestanden zijn de uitkomsten vanaf verslagjaar 2020 niet meer vergelijkbaar met die van de voorgaande jaren. Uit een analyse voor verslagjaar 2019 naar het effect van het weglaten van de nevenadressen blijkt dat de afstand tot de dichtstbijzijnde huisartsenpraktijk op landelijk niveau met 0,1 km toeneemt. Op buurtniveau kan de afstand in bepaalde regio’s tot 7 km langer worden.
+",D000124_1,Double,km,1,Absolute
+A045790_1,10,Binnen 1 km,,D000124_2,Double,aantal,1,Absolute
+A045791_1,11,Binnen 3 km,,D000124_2,Double,aantal,1,Absolute
+A045792_1,12,Binnen 5 km,,D000124_2,Double,aantal,1,Absolute
+D000027,13,Afstand tot huisartsenpost,"Huisartsenpost
+Plaats waar huisartsen uit de regio de avond-, nacht- en weekenddiensten verzorgen. Voor een aantal huisartsenposten geldt een wisseldienst.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde huisartsenpost, berekend over de weg.
+
+De afstand van een woonadres tot een van de huisartsenposten in een cluster van wisseldiensten bepaald als het gemiddelde van de afstanden tot alle huisartsenposten binnen dat cluster.
+",D000124_1,Double,km,1,Absolute
+D000010,14,Afstand tot apotheek,"Apotheek, inclusief apotheekhoudende huisarts.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde apotheek, berekend over de weg.
+",D000115,Double,km,1,Absolute
+D000056_1,16,Afstand tot ziekenhuis,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde ziekenhuis, berekend over de weg.",D000164_1,Double,km,1,Absolute
+A045792_2,18,Binnen 5 km,,D000164_2,Double,aantal,1,Absolute
+A045793_1,19,Binnen 10 km,,D000164_2,Double,aantal,1,Absolute
+A045794_1,20,Binnen 20 km,,D000164_2,Double,aantal,1,Absolute
+D000056_2,22,Afstand tot ziekenhuis,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde ziekenhuis, berekend over de weg.",D000163,Double,km,1,Absolute
+A045792_3,24,Binnen 5 km,,D000164_3,Double,aantal,1,Absolute
+A045793_2,25,Binnen 10 km,,D000164_3,Double,aantal,1,Absolute
+A045794_2,26,Binnen 20 km,,D000164_3,Double,aantal,1,Absolute
+D000022,27,Afstand tot consultatiebureau,"Instelling binnen de Jeugdgezondheidszorg waar medische basiszorg en preventie wordt verzorgd voor alle kinderen van 0 tot 4 jaar.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde consultatiebureau, berekend over de weg.
+
+Vanaf verslagjaar 2007 zijn geen nieuwe cijfers meer beschikbaar voor deze voorziening.
+",D000115,Double,km,1,Absolute
+D000024,29,Afstand tot fysiotherapeut,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde fysiotherapeutenpraktijk, berekend over de weg.
+Vanaf verslagjaar 2013 zijn geen nieuwe cijfers meer beschikbaar voor deze voorziening.
+",D000112_1,Double,km,1,Absolute
+A045790_2,31,Binnen 1 km,,D000112_2,Double,aantal,1,Absolute
+A045791_2,32,Binnen 3 km,,D000112_2,Double,aantal,1,Absolute
+A045792_4,33,Binnen 5 km,,D000112_2,Double,aantal,1,Absolute
+D000025,36,Afstand tot grote supermarkt,"Winkel met meerdere soorten dagelijkse artikelen en een minimale oppervlakte van 150 m2.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde grote supermarkt, berekend over de weg.
+",D000162,Double,km,1,Absolute
+A045790_3,38,Binnen 1 km,,D000119,Double,aantal,1,Absolute
+A045791_3,39,Binnen 3 km,,D000119,Double,aantal,1,Absolute
+A045792_5,40,Binnen 5 km,,D000119,Double,aantal,1,Absolute
+D000038,41,Afstand tot ov. dagel. levensmiddelen,"Groenteboer, bakker, vlaaienwinkel, toko, chocoladewinkel, koffie/theewinkel, delicatessenwinkel, kaaswinkel, mini supermarkt, boerderijwinkel, nachtwinkel, poelier,  dieet/voedingssupplementenwinkel, slagerij, slijterij, tabak- en tabaklectuurwinkel, visboer, zoetwarenwinkel en ziekenhuiswinkel.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde overige winkels voor dagelijkse levensmiddelen, berekend over de weg.
+",D000162,Double,km,1,Absolute
+A045790_4,43,Binnen 1 km,,D000133,Double,aantal,1,Absolute
+A045791_4,44,Binnen 3 km,,D000133,Double,aantal,1,Absolute
+A045792_6,45,Binnen 5 km,,D000133,Double,aantal,1,Absolute
+D000055,47,Afstand tot warenhuis,"Winkels waar 50 of meer personen werkzaam zijn, en die voldoen aan de volgende criteria:
+-  de verkochte producten behoren tot acht of meer branches, waarbij elke branche een omzetaandeel heeft van meer dan 5 procent;
+- geen enkele klasse heeft een omzetaandeel van 50 procent of meer;
+- voedings- en genotmiddelen hebben een omzetaandeel van minder dan 50 procent.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde warenhuis, berekend over de weg.
+",D000160_1,Double,km,1,Absolute
+A045792_7,49,Binnen 5 km,,D000160_2,Double,aantal,1,Absolute
+A045793_3,50,Binnen 10 km,,D000160_2,Double,aantal,1,Absolute
+A045794_3,51,Binnen 20 km,,D000160_2,Double,aantal,1,Absolute
+D000020,54,Afstand tot café e.d.,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde café e.d., berekend over de weg.",D000107_1,Double,km,1,Absolute
+A045790_5,56,Binnen 1 km,,D000107_2,Double,aantal,1,Absolute
+A045791_5,57,Binnen 3 km,,D000107_2,Double,aantal,1,Absolute
+A045792_8,58,Binnen 5 km,,D000107_2,Double,aantal,1,Absolute
+D000021,60,Afstand tot cafetaria e.d.,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde cafetaria e.d., berekend over de weg.",D000108_1,Double,km,1,Absolute
+A045790_6,62,Binnen 1 km,,D000108_2,Double,aantal,1,Absolute
+A045791_6,63,Binnen 3 km,,D000108_2,Double,aantal,1,Absolute
+A045792_9,64,Binnen 5 km,,D000108_2,Double,aantal,1,Absolute
+D000043,66,Afstand tot restaurant,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde restaurant, berekend over de weg.",D000139_1,Double,km,1,Absolute
+A045790_7,68,Binnen 1 km,,D000139_2,Double,aantal,1,Absolute
+A045791_7,69,Binnen 3 km,,D000139_2,Double,aantal,1,Absolute
+A045792_10,70,Binnen 5 km,,D000139_2,Double,aantal,1,Absolute
+D000026,72,Afstand tot hotel e.d.,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde hotel e.d., berekend over de weg.",D000123_1,Double,km,1,Absolute
+A045792_11,74,Binnen 5 km,,D000123_2,Double,aantal,1,Absolute
+A045793_4,75,Binnen 10 km,,D000123_2,Double,aantal,1,Absolute
+A045794_4,76,Binnen 20 km,,D000123_2,Double,aantal,1,Absolute
+D000029,79,Afstand tot kinderdagverblijf,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde kinderdagverblijf, berekend over de weg.",D000126_1,Double,km,1,Absolute
+A045790_8,81,Binnen 1 km,,D000126_2,Double,aantal,1,Absolute
+A045791_8,82,Binnen 3 km,,D000126_2,Double,aantal,1,Absolute
+A045792_12,83,Binnen 5 km,,D000126_2,Double,aantal,1,Absolute
+D000019,85,Afstand tot buitenschoolse opvang,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde buitenschoolse opvang, berekend over de weg.",D000105_1,Double,km,1,Absolute
+A045790_9,87,Binnen 1 km,,D000105_2,Double,aantal,1,Absolute
+A045791_9,88,Binnen 3 km,,D000105_2,Double,aantal,1,Absolute
+A045792_13,89,Binnen 5 km,,D000105_2,Double,aantal,1,Absolute
+D000045_1,92,Afstand tot school,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde school, berekend over de weg.",D000096,Double,km,1,Absolute
+A045790_10,94,Binnen 1 km,,D000141_1,Double,aantal,1,Absolute
+A045791_10,95,Binnen 3 km,,D000141_1,Double,aantal,1,Absolute
+A045792_14,96,Binnen 5 km,,D000141_1,Double,aantal,1,Absolute
+D000045_2,99,Afstand tot school,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde school, berekend over de weg.",D000158_2,Double,km,1,Absolute
+A045791_11,101,Binnen 3 km,,D000141_2,Double,aantal,1,Absolute
+A045792_15,102,Binnen 5 km,,D000141_2,Double,aantal,1,Absolute
+A045793_5,103,Binnen 10 km,,D000141_2,Double,aantal,1,Absolute
+D000045_3,105,Afstand tot school,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde school, berekend over de weg.",D000157,Double,km,1,Absolute
+A045791_12,107,Binnen 3  km,,D000141_3,Double,aantal,1,Absolute
+A045792_16,108,Binnen 5  km,,D000141_3,Double,aantal,1,Absolute
+A045793_6,109,Binnen 10  km,,D000141_3,Double,aantal,1,Absolute
+D000045_4,111,Afstand tot school,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde school, berekend over de weg.",D000120,Double,km,1,Absolute
+A045791_13,113,Binnen 3 km,,D000141_4,Double,aantal,1,Absolute
+A045792_17,114,Binnen 5 km,,D000141_4,Double,aantal,1,Absolute
+A045793_7,115,Binnen 10 km,,D000141_4,Double,aantal,1,Absolute
+D000036,118,Afstand tot openbaar groen totaal,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde openbaar groen, berekend over de weg.",D000132,Double,km,1,Absolute
+D000039,119,Afstand tot park of plantsoen,"Terrein in gebruik voor ontspanning zoals ligweiden, heesterbeplantingen, beboste delen van parken en forse groenstroken.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde park of plantsoen, berekend over de weg.
+",D000132,Double,km,1,Absolute
+D000023,120,Afstand tot dagrecreatief terrein,"Terrein in gebruik voor dagrecreatie zoals dierentuinen, jachthavens, kinderboerderijen, openluchtmusea, picknickplaatsen en speelweiden (buiten park en plantsoen) en pretparken.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde dagrecreatief terrein, berekend over de weg.
+",D000132,Double,km,1,Absolute
+D000017,121,Afstand tot bos,"Terrein begroeid met bomen bestemd voor houtproductie en/of natuurbeheer.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde bos, berekend over de weg.
+",D000132,Double,km,1,Absolute
+D000034_1,123,Afstand tot open nat. terrein totaal,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde open natuurlijk terrein, berekend over de weg.",D000035,Double,km,1,Absolute
+D000033,124,Afstand tot open droog nat. terrein,"Terrein met een droge ondergrond in gebruik als natuur, zoals droge heide, duinen, zandverstuivingen en strand.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde droog open natuurlijk terrein, berekend over de weg.
+",D000035,Double,km,1,Absolute
+D000034_2,125,Afstand tot open nat natuurlijk terrein,"Terrein met een natte ondergrond in gebruik als natuur, zoals natte heide, riet en biezen, kwelders, drooggevallen gronden zonder begroeiing en blauwgrasland.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde nat open natuurlijk terrein, berekend over de weg.
+",D000035,Double,km,1,Absolute
+D000049,127,Afstand tot semi-openbaar groen totaal,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde semi-openbaar groen, berekend over de weg.",D000142,Double,km,1,Absolute
+D000051,128,Afstand tot sportterrein,"Terrein in gebruik voor sportactiviteiten, zoals sportveld, sporthal, binnenzwembad, kunstijsbaan, motorcrossbaan en bos in het sportterrein, inclusief bijbehorende parkeerplaatsen en tribunes. Het terrein heeft een omvang van minimaal 0,5 hectare.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde sportterrein, berekend over de weg.
+",D000142,Double,km,1,Absolute
+D000054,129,Afstand tot volkstuin,"Terrein voor niet-commerciële sier- en groenteteelt. Het terrein heeft een omvang van minimaal 0,1 hectare.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde volkstuin, berekend over de weg.
+",D000142,Double,km,1,Absolute
+D000053,130,Afstand tot verblijfsrecreatief terrein,"Terrein in gebruik voor een meerdaags recreatief verblijf, zoals camping, bungalowparken, jeugdherbergen en bijbehorende parkeerplaatsen. Het terrein heeft een omvang van minimaal 1 hectare.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde terrein voor verblijfsrecreatie, berekend over de weg.
+",D000142,Double,km,1,Absolute
+D000013,131,Afstand tot begraafplaats,"Terrein in gebruik voor begraven en cremeren, inclusief bijbehorende parkeerplaatsen en parken. Het terrein heeft een omvang van minimaal 0,1 hectare.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde begraafplaats, berekend over de weg.
+",D000142,Double,km,1,Absolute
+D000042,132,Afstand tot recreatief binnenwater,"Binnenwater in gebruik voor recreatie, zoals recreatieplassen, water in park en plantsoen, golfterrein, jachthavens en roeibanen. Het terrein heeft een omvang van minimaal 1 hectare. Alleen voor jachthavens geldt een ondergrens van 0,5 hectare voor het watergedeelte.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde recreatief binnenwater, berekend over de weg.
+",D000118,Double,km,1,Absolute
+D000037,134,Afstand tot oprit hoofdverkeersweg,"Toegang tot een rijks- of provinciale weg.
+Als uitgangspunt voor de opritten is het Nationale Wegenbestand (een product van Adviesdienst Verkeer en Vervoer van het Ministerie van Infrastructuur en Milieu) gebruikt.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde oprit van een rijks- of provinciale weg, berekend over de weg.
+",M000146,Double,km,1,Absolute
+D000052,136,Afstand tot treinstations totaal,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde treinstation, berekend over de weg.",D000145,Double,km,1,Absolute
+D000014,137,Afstand tot belangrijk overstapstation,"Treinstations van grote omvang of met belangrijke overstapmogelijkheden.
+
+De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde belangrijke overstapstation, berekend over de weg.
+",D000145,Double,km,1,Absolute
+D000015,139,Afstand tot bibliotheek,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde bibliotheek, berekend over de weg.
+
+Bibliotheken, hun vestigingen en servicepunten. De miniservicepunten, zelfbedieningsbibliotheken en de bibliobussen zijn niet opgenomen.
+
+Een vestiging voldoet aan de volgende criteria: minimaal 15 uur per week open, digitale toegang tot de gehele collectie en activiteitenaanbod, vraagbemiddeling, culturele/literaire activiteiten, aanbod voor scholieren/instellingen passend bij de keuzes die gemaakt zijn in het spreidings- en- marketingbeleid en studiemogelijkheden.
+
+Een servicepunt biedt minimaal het volgende dienstverleningsniveau: is minimaal 4 uur per week open, biedt digitale toegang tot het totale activiteitenaanbod en voorziet in vraagbemiddeling (zowel persoonlijk als via internet).
+",D000159,Double,km,1,Absolute
+D000058,141,Afstand tot binnenzwembad,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde binnenzwembad, berekend over de weg.",D000143,Double,km,1,Absolute
+D000030,142,Afstand tot kunstijsbaan,"Schaatsbaan van kunstijs die tijdens het winterseizoen toegankelijk is.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde kunstijsbaan, berekend over de weg.
+",D000143,Double,km,1,Absolute
+D000032,144,Afstand tot museum,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde museum, berekend over de weg.",D000129_1,Double,km,1,Absolute
+A045792_18,146,Binnen 5 km,,D000129_2,Double,aantal,1,Absolute
+A045793_8,147,Binnen 10 km,,D000129_2,Double,aantal,1,Absolute
+A045794_5,148,Binnen 20 km,,D000129_2,Double,aantal,1,Absolute
+D000040,150,Afstand tot podiumkunsten totaal,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde locatie van podiumkunst, berekend over de weg.",D000136,Double,km,1,Absolute
+A045792_19,152,Binnen 5 km,,D000135,Double,aantal,1,Absolute
+A045793_9,153,Binnen 10 km,,D000135,Double,aantal,1,Absolute
+A045794_6,154,Binnen 20 km,,D000135,Double,aantal,1,Absolute
+D000041,155,Afstand tot poppodium,"De gemiddelde afstand van alle inwoners in een gebied tot het dichtstbijzijnde poppodium, berekend over de weg.",D000136,Double,km,1,Absolute
+D000016,157,Afstand tot bioscoop,"‘Reguliere’ theaters en gemeenschapshuizen, enz., die films vertonen, worden pas als bioscopen meegeteld, als het vertonen van films plaatsvindt tijdens het meerderheid van de openingstijden.",D000104_1,Double,km,1,Absolute
+A045792_20,159,Binnen 5 km,,D000104_2,Double,aantal,1,Absolute
+A045793_10,160,Binnen 10 km,,D000104_2,Double,aantal,1,Absolute
+A045794_7,161,Binnen 20 km,,D000104_2,Double,aantal,1,Absolute
+D000044,163,Afstand tot sauna,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde sauna, berekend over de weg.",D000138,Double,km,1,Absolute
+D000057,164,Afstand tot zonnebank,"De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde zonnebank, berekend over de weg.",D000138,Double,km,1,Absolute
+D000011,165,Afstand tot attractie,"Pretpark, dierentuin en binnenspeeltuin.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde attractie, berekend over de weg.
+",D000138,Double,km,1,Absolute
+A045793_11,167,Binnen 10 km,,D000095,Double,aantal,1,Absolute
+A045794_8,168,Binnen 20 km,,D000095,Double,aantal,1,Absolute
+A045795,169,Binnen 50 km,,D000095,Double,aantal,1,Absolute
+D000018,170,Afstand tot brandweerkazerne,"Brandweerkazerne, exclusief locaties van blusboten.
+
+De gemiddelde afstand van alle inwoners in een gebied tot de dichtstbijzijnde brandweerkazerne, berekend over de weg.
+",,Double,km,1,Absolute
