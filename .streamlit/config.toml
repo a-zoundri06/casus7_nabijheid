@@ -1,0 +1,7 @@
+[theme]
+# Blauw-groen thema, met dezelfde kleuren als stad (blauw) en platteland (groen) in de grafieken
+primaryColor = "#1f5f8b"              # stadsblauw: slider, knoppen en de gekozen pagina in het menu
+backgroundColor = "#ffffff"           # wit: de pagina zelf, zodat de grafieken rustig blijven
+secondaryBackgroundColor = "#e8f2ee"  # licht blauwgroen: de zijbalk met het menu en de filters
+textColor = "#1b2b34"                 # donker blauwgrijs in plaats van zwart
+font = "sans serif"

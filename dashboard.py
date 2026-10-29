@@ -80,9 +80,10 @@ AANTAL_GEMEENTEN = 10          # hoeveel gemeenten de onderste grafiek van tab 2
 
 # Vaste kleuren, overal in het dashboard hetzelfde
 KLEUREN = {"Stad": "#1f5f8b", "Platteland": "#3a8a5c", "Alle buurten": "#8c8c8c"}
-KLEUR_VERSCHIL = "#e07b39"     # oranje: het effect van een supermarkt op loopafstand
-# Gemeentegrafiek in tab 2: lichtoranje = alle buurten, donkeroranje = bij gelijk woningtype
-KLEUREN_VERGELIJKING = {"Alle buurten vergeleken": "#f6c9a5",
+KLEUR_VERSCHIL = "#6a4c93"     # paars: het effect van een supermarkt op loopafstand
+KLEUR_VERSCHIL_LICHT = "#d4c6e6"  # lichtpaars: de andere kant van hetzelfde
+# Gemeentegrafiek in tab 2: lichtpaars = alle buurten, donkerpaars = bij gelijk woningtype
+KLEUREN_VERGELIJKING = {"Alle buurten vergeleken": KLEUR_VERSCHIL_LICHT,
                         "Bij gelijk woningtype": KLEUR_VERSCHIL}
 
 
@@ -105,8 +106,6 @@ def laad_data():
     nabij_lang = pd.read_csv(BESTAND_NABIJHEID)
     kern_lang = pd.read_csv(BESTAND_KERNCIJFERS)
     regio_codeboek = pd.read_csv(BESTAND_REGIO_CODEBOEK)
-    stappen["ruw_nabijheid"] = len(nabij_lang)
-    stappen["ruw_kerncijfers"] = len(kern_lang)
     stappen["voorbeeld_lang"] = nabij_lang[["WijkenEnBuurten", "Measure", "Value"]].head(8)
 
     # --- Stap 2: codes opschonen en alleen buurten houden ---
@@ -135,7 +134,6 @@ def laad_data():
     # --- Stap 4: samenvoegen op buurtcode ---
     # Eerst controleren: welke buurten zitten in beide tabellen, en welke maar in een?
     controle = nabij.merge(kern, on="buurtcode", how="outer", indicator=True)
-    stappen["in_beide"] = (controle["_merge"] == "both").sum()
     stappen["alleen_nabijheid"] = (controle["_merge"] == "left_only").sum()
     stappen["alleen_kerncijfers"] = (controle["_merge"] == "right_only").sum()
 
@@ -153,8 +151,6 @@ def laad_data():
     # --- Stap 5: ontbrekende waarden ---
     df["stedelijkheid"] = df["stedelijkheid_code"].map(STEDELIJKHEID_NAMEN)
     df["woz_ontbreekt"] = df["woz_x1000"].isna()
-    stappen["missend"] = df[["afstand_supermarkt_km", "woz_x1000",
-                             "pct_eengezinswoning"]].isna().sum()
     stappen["missend_per_stedelijkheid"] = (
         df.groupby("stedelijkheid")["woz_ontbreekt"].mean() * 100
     ).reset_index(name="procent_zonder_woz")
@@ -249,8 +245,6 @@ def bereken_verschil(df, groep_kolom, ja_nee_kolom, uitkomst_kolom):
             groep_kolom: groep,
             "buurten_ja": len(ja),
             "buurten_nee": len(nee),
-            "gemiddelde_ja": ja[uitkomst_kolom].mean(),
-            "gemiddelde_nee": nee[uitkomst_kolom].mean(),
             "verschil_pct": (np.exp(verschil) - 1) * 100,    # terug van log naar %
             "marge_laag_pct": (np.exp(laag) - 1) * 100,
             "marge_hoog_pct": (np.exp(hoog) - 1) * 100,
@@ -438,10 +432,13 @@ def kies_zoom(lon, lat):
     return float(np.clip(np.log2(360 / breedte) - 0.4, 6, 13))
 
 
-def toon_ontbrekende_groepen(df, groep_kolom, groepen, gebieden):
-    """Zet onder een grafiek van tab 3 welke groepen niet getoond worden en waarom,
+def toon_ontbrekende_groepen(df, uitkomst, groep_kolom, groepen, gebieden):
+    """Zet onder een grafiek van tab 3 welke gebieden en groepen niet getoond worden en waarom,
     bv. 'Niet getoond: platteland · 3 of meer (maar 12 buurten)'."""
     for gebied in gebieden:
+        if len(uitkomst) == 0 or gebied not in uitkomst["gebied"].values:
+            st.caption(f"{gebied}: te weinig buurten per groep om betrouwbaar te vergelijken, "
+                       "daarom niet in deze grafiek.")
         aantallen = df[df["gebied"] == gebied][groep_kolom].value_counts()
         for groep in groepen:
             aantal = aantallen.get(groep, 0)
@@ -595,22 +592,16 @@ for gebied in meldingen:
     )
 
 # =====================================================================
-# TABBLADEN
+# PAGINA'S
 # =====================================================================
-# Navigatie met een radio in plaats van st.tabs. Twee redenen:
-# 1. st.tabs rekent ALLE tabbladen bij elke klik opnieuw uit; nu alleen het gekozen tabblad.
-# 2. st.tabs sprong terug naar het eerste tabblad als er een gele melding bij kwam of verdween;
-#    dankzij key="pagina" onthoudt Streamlit welk onderdeel je had gekozen.
-PAGINAS = ["1 · Eerste blik", "2 · Vergelijkbare buurten", "3 · Afstand",
-           "4 · Kaart", "5 · Conclusie", "6 · Over de data"]
-st.divider()
-pagina = st.radio("Ga naar", PAGINAS, horizontal=True, key="pagina",
-                  label_visibility="collapsed")
+# Elke pagina is hieronder een functie. Onderaan het bestand maakt st.navigation daar een
+# menu van in de zijbalk. Alleen de gekozen pagina wordt uitgerekend, en Streamlit onthoudt
+# welke pagina open staat (ook als er een gele melding bij komt of verdwijnt).
 st.divider()
 
-# Kleuren voor 'op loopafstand' tegen 'niet': donker- en lichtoranje (twee kanten van hetzelfde).
+# Kleuren voor 'op loopafstand' tegen 'niet': donker- en lichtpaars (twee kanten van hetzelfde).
 # Zo blijven blauw en groen altijd gereserveerd voor stad en platteland.
-KLEUREN_LOOPAFSTAND = {"Op loopafstand": "#e07b39", "Niet op loopafstand": "#f6c9a5"}
+KLEUREN_LOOPAFSTAND = {"Op loopafstand": KLEUR_VERSCHIL, "Niet op loopafstand": KLEUR_VERSCHIL_LICHT}
 VOLGORDE_GEBIED = ["Stad", "Platteland"]
 VOLGORDE_LOOPAFSTAND = ["Op loopafstand", "Niet op loopafstand"]
 # Tab 3 en 5 geven alleen deze kolommen door aan bereken_per_groep. Zonder de kolom
@@ -625,7 +616,7 @@ buurten["loopafstand_tekst"] = buurten["supermarkt_op_loopafstand"].map(
 # ---------------------------------------------------------------------
 # TAB 1 · EERSTE BLIK
 # ---------------------------------------------------------------------
-if pagina == PAGINAS[0]:
+def pagina_eerste_blik():
     st.subheader("Op het eerste gezicht lijkt een supermarkt dichtbij de WOZ te verlagen")
     st.write("Eerst vergelijken we alle buurten simpelweg met elkaar. "
              "Daarna kijken we waarom dat eerste antwoord misleidend is.")
@@ -711,7 +702,7 @@ if pagina == PAGINAS[0]:
                       .reset_index())
         # Groepen met te weinig buurten laten we niet zien (zelfde regel als bij de KPI's)
         te_klein = woningtype[woningtype["aantal"] < MINIMAAL_BUURTEN]
-        woningtype = woningtype[woningtype["aantal"] >= MINIMAAL_BUURTEN]
+        woningtype = woningtype[woningtype["aantal"] >= MINIMAAL_BUURTEN].copy()
         woningtype["label"] = woningtype["pct_eengezinswoning"].round(0).astype(int).astype(str) + "%"
         fig = px.bar(
             woningtype, x="gebied", y="pct_eengezinswoning", text="label",
@@ -745,7 +736,7 @@ if pagina == PAGINAS[0]:
 # ---------------------------------------------------------------------
 # TAB 2 · VERGELIJKBARE BUURTEN
 # ---------------------------------------------------------------------
-if pagina == PAGINAS[1]:
+def pagina_vergelijkbare_buurten():
     st.subheader("Vergelijkbare buurten: wat blijft er over van het verschil?")
     st.write("In tab 1 zag je twee redenen waarom het eerste getal misleidend is. Hier halen "
              "we die er stap voor stap uit. Bij elke stap houden we één ding meer gelijk.")
@@ -778,7 +769,7 @@ if pagina == PAGINAS[1]:
     # 2. Alleen gemeenten met genoeg buurten in beide groepen; daarvan de grootste
     if len(gewoon) > 0:
         gewoon = gewoon[gewoon[["buurten_ja", "buurten_nee"]].min(axis=1)
-                        >= MINIMAAL_BUURTEN_GEMEENTE]
+                        >= MINIMAAL_BUURTEN_GEMEENTE].copy()
         gewoon["buurten"] = gewoon["buurten_ja"] + gewoon["buurten_nee"]
         gewoon = gewoon.nlargest(AANTAL_GEMEENTEN, "buurten")
 
@@ -858,20 +849,23 @@ if pagina == PAGINAS[1]:
 
     # ----- Conclusie van deze tab -----
     regels = []
+    alle_lager = True
     for gebied in VOLGORDE_GEBIED:
         if gebied in eindstap.index and eindstap.loc[gebied, "betrouwbaar"]:
             regels.append(f"**{hoger_of_lager(eindstap.loc[gebied, 'verschil_pct'])}** in de "
                           f"{'stad' if gebied == 'Stad' else 'plattelandsbuurten'}")
+            alle_lager = alle_lager and eindstap.loc[gebied, "verschil_pct"] < 0
     if regels:
+        kop = ("zijn buurten met een supermarkt op loopafstand niet meer waard, maar juist "
+               "goedkoper: " if alle_lager else "is het verschil: ")
         st.info("**Ook bij vergelijkbare buurten** (binnen dezelfde gemeente en bij hetzelfde woningtype) "
-                "zijn buurten met een supermarkt op loopafstand niet meer waard, maar juist "
-                "goedkoper: " + " en ".join(regels) + ". Bij welke afstand begint dat verschil? "
+                + kop + " en ".join(regels) + ". Bij welke afstand begint dat verschil? "
                 "Zie **tab 3**.")
 
 # ---------------------------------------------------------------------
 # TAB 3 · AFSTAND EN AANTAL
 # ---------------------------------------------------------------------
-if pagina == PAGINAS[2]:
+def pagina_afstand():
     st.subheader("Hoe verder de supermarkt, hoe hoger de WOZ?")
     st.write("In tab 2 waren er twee groepen: op loopafstand of niet. Hier kijken we preciezer: "
              "eerst naar de afstand tot de supermarkt, daarna naar het aantal supermarkten dichtbij.")
@@ -894,11 +888,7 @@ if pagina == PAGINAS[2]:
             x_titel="Afstand tot grote supermarkt",
         )
         st.plotly_chart(fig)
-    for gebied in gekozen_gebieden:
-        if len(banden) == 0 or gebied not in banden["gebied"].values:
-            st.caption(f"{gebied}: te weinig buurten per groep om betrouwbaar te vergelijken, "
-                       "daarom niet in deze grafiek.")
-    toon_ontbrekende_groepen(buurten, "afstandsband", BAND_NAMEN, gekozen_gebieden)
+    toon_ontbrekende_groepen(buurten, banden, "afstandsband", BAND_NAMEN, gekozen_gebieden)
 
     # ----- Rij 2: per aantal supermarkten binnen 1 km -----
     st.markdown("#### 2 · Aantal grote supermarkten binnen 1 km")
@@ -918,11 +908,8 @@ if pagina == PAGINAS[2]:
         st.plotly_chart(fig)
         st.caption("Het CBS geeft per buurt het gemiddelde aantal supermarkten binnen 1 km "
                    "(bijvoorbeeld 1,4). Dat is hier afgerond naar een heel getal.")
-    for gebied in gekozen_gebieden:
-        if len(aantallen) == 0 or gebied not in aantallen["gebied"].values:
-            st.caption(f"{gebied}: te weinig buurten per groep om betrouwbaar te vergelijken, "
-                       "daarom niet in deze grafiek.")
-    toon_ontbrekende_groepen(buurten, "aantal_supermarkten", AANTAL_NAMEN, gekozen_gebieden)
+    toon_ontbrekende_groepen(buurten, aantallen, "aantal_supermarkten", AANTAL_NAMEN,
+                             gekozen_gebieden)
 
     # ----- Hoe is dit berekend? -----
     with st.expander("Hoe is dit berekend?"):
@@ -958,14 +945,14 @@ if pagina == PAGINAS[2]:
 # ---------------------------------------------------------------------
 # TAB 4 · KAART
 # ---------------------------------------------------------------------
-if pagina == PAGINAS[3]:
+def pagina_kaart():
     st.subheader("Op de kaart: waar ligt de supermarkt dichtbij, en waar is het duur?")
     st.write("**Links:** welke buurten hebben een grote supermarkt op loopafstand (volgt de "
              "slider)? **Rechts:** hoe hoog is de WOZ-waarde? Leg de kaarten naast elkaar.")
-    st.info("**Waar je op let:** liggen de oranje buurten (supermarkt dichtbij) vooral in het "
+    st.info("**Waar je op let:** liggen de paarse buurten (supermarkt dichtbij) vooral in het "
             "centrum, en zijn diezelfde buurten rechts lichter (goedkoper) dan de buurten aan de "
             "rand? Dat ruimtelijke patroon, een goedkoper centrum met een duurdere ring eromheen, "
-            "zie je in geen enkele tabel. Schuif met de slider om te zien hoe het oranje gebied "
+            "zie je in geen enkele tabel. Schuif met de slider om te zien hoe het paarse gebied "
             "groeit, en kies een andere gemeente om te zien of het daar ook zo is.")
 
     vlakken, middelpunten = maak_kaartdata()
@@ -1010,8 +997,9 @@ if pagina == PAGINAS[3]:
             center=centrum, zoom=zoom, map_style="carto-positron", opacity=0.8,
             title=f"Supermarkt binnen {afstand_tekst}?",
         )
+        # Legenda rechts van de kaart (net als de kleurbalk rechts), zodat beide kaarten even groot zijn
         fig.update_layout(height=520, margin=dict(l=0, r=0, t=40, b=0),
-                          legend=dict(orientation="h", y=-0.02))
+                          legend=dict(orientation="v", x=1.02, y=1, xanchor="left", yanchor="top"))
         st.plotly_chart(fig)
     with rechts:
         fig = px.choropleth_map(
@@ -1032,15 +1020,15 @@ if pagina == PAGINAS[3]:
     st.markdown(f"#### Wat betekent dit voor {gemeente}?")
     k1, k2, k3 = st.columns(3)
 
-    # Kader 1 en 2: gewoon de gemiddelde WOZ van de oranje en de lichtoranje buurten
+    # Kader 1 en 2: gewoon de gemiddelde WOZ van de paarse en de lichtpaarse buurten
     with k1.container(border=True):
         waarde = f"€ {getal(met['woz_euro'].mean())}" if len(met) > 0 else "—"
         st.metric("Gem. WOZ mét supermarkt op loopafstand", waarde)
-        st.caption(f"de {getal(len(met))} oranje buurten op de kaart")
+        st.caption(f"de {getal(len(met))} paarse buurten op de kaart")
     with k2.container(border=True):
         waarde = f"€ {getal(zonder['woz_euro'].mean())}" if len(zonder) > 0 else "—"
         st.metric("Gem. WOZ zónder supermarkt op loopafstand", waarde)
-        st.caption(f"de {getal(len(zonder))} lichtoranje buurten op de kaart")
+        st.caption(f"de {getal(len(zonder))} lichtpaarse buurten op de kaart")
 
     # Kader 3: het verschil bij gelijk woningtype (zelfde berekening als de donkere balk in tab 2)
     with k3.container(border=True):
@@ -1093,19 +1081,19 @@ if pagina == PAGINAS[3]:
 # ---------------------------------------------------------------------
 # TAB 5 · CONCLUSIE
 # ---------------------------------------------------------------------
-if pagina == PAGINAS[4]:
+def pagina_conclusie():
     st.subheader("Conclusie: wat is een supermarkt op loopafstand waard?")
 
     # ----- Het antwoord in één zin -----
     getoond = [g for g in VOLGORDE_GEBIED
                if g in eindstap.index and eindstap.loc[g, "betrouwbaar"]]
+    alle_lager = all(eindstap.loc[g, "verschil_pct"] < 0 for g in getoond)
     if len(getoond) == 0:
         st.warning("Met deze instellingen is er te weinig data voor een conclusie. "
                    "Zet de slider op 1 km en het filter Gebied op Beide.")
     else:
         delen = [f"**{hoger_of_lager(eindstap.loc[g, 'verschil_pct'])}** in de "
                  f"{'stad' if g == 'Stad' else 'plattelandsbuurten'}" for g in getoond]
-        alle_lager = all(eindstap.loc[g, "verschil_pct"] < 0 for g in getoond)
         kop = ("Een supermarkt op loopafstand maakt een buurt niet meer waard, maar juist "
                "minder." if alle_lager else "Het antwoord verschilt per gebied.")
         st.info(f"### {kop}\n\nVergelijk je buurten in dezelfde gemeente en met hetzelfde "
@@ -1120,8 +1108,9 @@ if pagina == PAGINAS[4]:
             st.markdown(f"**1 · Eerste blik:** alle buurten samen zijn met een supermarkt op "
                         f"loopafstand **{hoger_of_lager(eerste['verschil_pct'].iloc[0])}**. "
                         "Maar die buurten liggen vaker in de stad en hebben vaker appartementen.")
-        st.markdown("**2 · Vergelijkbare buurten:** halen we stad/platteland, woningtype en "
-                    "gemeente eruit, dan wordt het verschil kleiner, maar het blijft negatief.")
+        if len(getoond) > 0 and alle_lager:
+            st.markdown("**2 · Vergelijkbare buurten:** halen we stad/platteland, woningtype en "
+                        "gemeente eruit, dan wordt het verschil kleiner, maar het blijft negatief.")
         banden_conclusie = bereken_per_groep(buurten[KOLOMMEN_PER_GROEP + ["afstandsband"]],
                                              "afstandsband", BAND_NAMEN)
         zinnen = []
@@ -1145,12 +1134,9 @@ if pagina == PAGINAS[4]:
     with links.container(border=True):
         st.markdown("#### Advies aan de gemeente")
 
-        # De getallen voor in het advies (bij vergelijkbare buurten, stap 4)
-        def getal_gebied(gebied):
-            if gebied in eindstap.index and eindstap.loc[gebied, "betrouwbaar"]:
-                return eindstap.loc[gebied, "verschil_pct"]
-            return None
-        stad, platteland = getal_gebied("Stad"), getal_gebied("Platteland")
+        # De getallen voor in het advies (bij vergelijkbare buurten, stap 4); None = geen getal
+        stad = eindstap.loc["Stad", "verschil_pct"] if "Stad" in getoond else None
+        platteland = eindstap.loc["Platteland", "verschil_pct"] if "Platteland" in getoond else None
 
         advies = []
         cijfers = []
@@ -1158,7 +1144,7 @@ if pagina == PAGINAS[4]:
             cijfers.append(f"{hoger_of_lager(stad)} in de stad")
         if platteland is not None:
             cijfers.append(f"{hoger_of_lager(platteland)} op het platteland")
-        if cijfers:
+        if cijfers and all(g is None or g < 0 for g in [stad, platteland]):
             advies.append("**Reken niet op een hogere woningwaarde door een supermarkt op "
                           "loopafstand.** Bij vergelijkbare buurten is de WOZ "
                           + " en ".join(cijfers) + ".")
@@ -1191,7 +1177,7 @@ if pagina == PAGINAS[4]:
 # ---------------------------------------------------------------------
 # TAB 6 · OVER DE DATA
 # ---------------------------------------------------------------------
-if pagina == PAGINAS[5]:
+def pagina_over_de_data():
     st.subheader("Over de data: waar komt het vandaan en wat is ermee gebeurd?")
     st.caption("Dit onderdeel gaat over alle buurten; de filters links werken hier niet.")
 
@@ -1286,3 +1272,20 @@ if pagina == PAGINAS[5]:
             "- **Geen invulling van missende waarden:** buurten zonder WOZ of woningtype laten "
             "we weg."
         )
+
+
+# =====================================================================
+# MENU LINKS
+# =====================================================================
+# Het menu in de zijbalk: elke regel koppelt een titel (en een icoontje) aan een functie hierboven.
+menu = st.navigation([
+    st.Page(pagina_eerste_blik, title="1 · Eerste blik", icon=":material/visibility:",
+            default=True),
+    st.Page(pagina_vergelijkbare_buurten, title="2 · Vergelijkbare buurten",
+            icon=":material/balance:"),
+    st.Page(pagina_afstand, title="3 · Afstand", icon=":material/straighten:"),
+    st.Page(pagina_kaart, title="4 · Kaart", icon=":material/map:"),
+    st.Page(pagina_conclusie, title="5 · Conclusie", icon=":material/flag:"),
+    st.Page(pagina_over_de_data, title="6 · Over de data", icon=":material/database:"),
+])
+menu.run()          # voert de functie van de gekozen pagina uit
